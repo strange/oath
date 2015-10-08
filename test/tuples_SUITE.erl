@@ -18,20 +18,23 @@ end_per_suite(_Config) ->
     ok.
 
 tuples(_Config) ->
-    ValidationSet = [
+    Rules = [
         {<<"name">>, string, [{required, true}]},
-        {<<"gender">>, string, [{required, true}, {max_length, 1},
-                                {in, ["m", "f"]}]}
+        {<<"gender">>, string, #{
+            required => true,
+            max_length => 1,
+            in => ["m", "f"]
+        }}
     ],
 
     {valid, #{<<"gender">> := "m"}} = oath:validate_tuples([
         {<<"name">>, <<"Gurra">>},
         {<<"gender">>, <<"m">>}
-    ], ValidationSet),
+    ], Rules),
 
     {invalid, #{<<"gender">> := not_in_values}} = oath:validate_tuples([
         {<<"name">>, <<"Gurra">>},
         {<<"gender">>, <<"x">>}
-    ], ValidationSet),
+    ], Rules),
 
     ok.
