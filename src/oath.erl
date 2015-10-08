@@ -6,34 +6,36 @@
 
 validators() -> [
         {string, [
-                fun oath_validators:strip/2,
-                fun oath_validators:empty_check/2,
-                fun oath_converters:string_converter/2,
-                fun oath_validators:min_length_validator/2,
-                fun oath_validators:max_length_validator/2,
-                fun oath_validators:value_in_validator/2,
-                fun oath_validators:custom_validators/2
-            ]
-        },
+            fun oath_validators:strip/2,
+            fun oath_validators:empty_check/2,
+            fun oath_converters:string_converter/2,
+            fun oath_validators:min_length_validator/2,
+            fun oath_validators:max_length_validator/2,
+            fun oath_validators:value_in_validator/2,
+            fun oath_validators:custom_validators/2
+        ]},
+        {list, [
+            fun oath_validators:empty_check/2,
+            fun oath_converters:list_converter/2,
+            fun oath_validators:min_length_validator/2,
+            fun oath_validators:max_length_validator/2
+        ]},
         {binary, [
-                fun oath_validators:empty_check/2,
-                fun oath_validators:min_size_validator/2,
-                fun oath_validators:max_size_validator/2,
-                fun oath_validators:value_in_validator/2
-            ]
-        },
+            fun oath_validators:empty_check/2,
+            fun oath_validators:min_size_validator/2,
+            fun oath_validators:max_size_validator/2,
+            fun oath_validators:value_in_validator/2
+        ]},
         {integer, [
-                fun oath_validators:strip/2,
-                fun oath_validators:empty_check/2,
-                fun oath_converters:integer_converter/2,
-                fun oath_validators:value_in_validator/2
-            ]
-        },
+            fun oath_validators:strip/2,
+            fun oath_validators:empty_check/2,
+            fun oath_converters:integer_converter/2,
+            fun oath_validators:value_in_validator/2
+        ]},
         {url, [
-                string,
-                fun oath_validators:valid_url/2
-            ]
-        }
+            string,
+            fun oath_validators:valid_url/2
+        ]}
     ].
 
 validate_tuples(Data, Rules) ->

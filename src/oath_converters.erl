@@ -2,6 +2,7 @@
 
 -export([empty_converter/2]).
 -export([string_converter/2]).
+-export([list_converter/2]).
 -export([integer_converter/2]).
 
 -define(EMPTY_VALUES, [[], <<>>, undefined]).
@@ -12,6 +13,11 @@ empty_converter(Value, Props) ->
         true -> {ok, []};
         false -> {ok, Value}
     end.
+
+list_converter(Value, _Props) when is_list(Value) ->
+    {ok, Value};
+list_converter(_Value, _Props) ->
+    {error, invalid_list}.
 
 %% @doc Attempt to convert value to a string
 string_converter(S, _Props) when is_binary(S) ->
