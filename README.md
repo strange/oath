@@ -15,7 +15,7 @@
         }}
     ].
 
-    {invalid, Errors} = oath:validate_tuples([
+    {error, Errors} = oath:validate_tuples([
         {<<"name">>, <<"Gurra">>},
         {<<"gender">>, <<"x">>}
     ], Rules).
@@ -38,5 +38,4 @@
 - DateTime
 - Regex
 - Email
-- Multiple values / list
 - IP (4 and 6)
