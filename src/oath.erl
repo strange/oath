@@ -36,6 +36,11 @@ validators() -> [
             fun oath_validators:strip/2,
             fun oath_validators:empty_check/2,
             fun oath_converters:integer_converter/2,
+            fun oath_validators:greater_than/2,
+            fun oath_validators:greater_than_or_equal_to/2,
+            fun oath_validators:less_than/2,
+            fun oath_validators:less_than_or_equal_to/2,
+            fun oath_validators:equal_to/2,
             fun oath_validators:value_in_validator/2
         ]},
         {url, [

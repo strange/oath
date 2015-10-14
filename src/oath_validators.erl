@@ -11,6 +11,11 @@
 -export([strip/2]).
 -export([ruleset_tuples_validator/2]).
 -export([ruleset_map_validator/2]).
+-export([greater_than/2]).
+-export([greater_than_or_equal_to/2]).
+-export([less_than/2]).
+-export([less_than_or_equal_to/2]).
+-export([equal_to/2]).
 
 -define(EMPTY_VALUES, [[], <<>>, undefined]).
 
@@ -22,6 +27,36 @@ strip(Value, _Props) when is_binary(Value) ->
 strip(Value, _Props) when is_list(Value) ->
     {ok, string:strip(Value)};
 strip(Value, _Props) ->
+    {ok, Value}.
+
+%% @doc Validate that value is greater than V
+greater_than(Value, #{gt := V}) when V >= Value ->
+    {error, {not_greater_than, V}};
+greater_than(Value, _Properties) ->
+    {ok, Value}.
+
+%% @doc Validate that value is greater than or equal to V
+greater_than_or_equal_to(Value, #{gte := V}) when V > Value ->
+    {error, {not_greater_than_or_equal_to, V}};
+greater_than_or_equal_to(Value, _Properties) ->
+    {ok, Value}.
+
+%% @doc Validate that value is less than V
+less_than(Value, #{lt := V}) when V =< Value ->
+    {error, {not_less_than, V}};
+less_than(Value, _Properties) ->
+    {ok, Value}.
+
+%% @doc Validate that value is greater than or equal to V
+less_than_or_equal_to(Value, #{lte := V}) when V < Value ->
+    {error, {not_less_than_or_equal_to, V}};
+less_than_or_equal_to(Value, _Properties) ->
+    {ok, Value}.
+
+%% @doc Validate that value is equal to
+equal_to(Value, #{eq := V}) when Value =/= V ->
+    {error, {not_equal_to, V}};
+equal_to(Value, _Properties) ->
     {ok, Value}.
 
 %% @doc Apply all custom validators on value
