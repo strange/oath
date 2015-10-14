@@ -39,16 +39,17 @@ custom_validators(Value, #{custom := [H|T]} = Props) ->
 custom_validators(Value, _Props) ->
     {ok, Value}.
 
+%% @doc Validate a list of tuples against specified rules
 ruleset_tuples_validator(Value, #{rules := _Rules} = Properties) ->
     ruleset_map_validator(maps:from_list(Value), Properties);
 ruleset_tuples_validator(Value, _Properties) ->
     {ok, Value}.
 
+%% @doc Validate map against specified rules
 ruleset_map_validator(Value, #{rules := Rules}) ->
     ruleset_map_validator(Value, Rules, #{}, #{});
 ruleset_map_validator(Value, _Properties) ->
     {ok, Value}.
-
 ruleset_map_validator(_Data, [], Values, Errors) when map_size(Errors) =:= 0 ->
     {valid, Values};
 ruleset_map_validator(_Data, [], _Values, Errors) ->
