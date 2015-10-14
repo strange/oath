@@ -9,6 +9,8 @@
 -export([value_in_validator/2]).
 -export([custom_validators/2]).
 -export([strip/2]).
+-export([ruleset_tuples_validator/2]).
+-export([ruleset_map_validator/2]).
 
 -define(EMPTY_VALUES, [[], <<>>, undefined]).
 
@@ -36,6 +38,28 @@ custom_validators(Value, #{custom := [H|T]} = Props) ->
     end;
 custom_validators(Value, _Props) ->
     {ok, Value}.
+
+ruleset_tuples_validator(Value, #{rules := _Rules} = Properties) ->
+    ruleset_map_validator(maps:from_list(Value), Properties);
+ruleset_tuples_validator(Value, _Properties) ->
+    {ok, Value}.
+
+ruleset_map_validator(Value, #{rules := Rules}) ->
+    ruleset_map_validator(Value, Rules, #{}, #{});
+ruleset_map_validator(Value, _Properties) ->
+    {ok, Value}.
+
+ruleset_map_validator(_Data, [], Values, Errors) when map_size(Errors) =:= 0 ->
+    {valid, Values};
+ruleset_map_validator(_Data, [], _Values, Errors) ->
+    {invalid, Errors};
+ruleset_map_validator(Data, [{Key, Type, Props}|T], Values, Errors) ->
+    case oath:validate(maps:get(Key, Data, undefined), Type, Props) of
+        {ok, Value} ->
+            ruleset_map_validator(Data, T, Values#{Key => Value}, Errors);
+        {error, Reason} ->
+            ruleset_map_validator(Data, T, Values, Errors#{Key => Reason})
+    end.
 
 %% @doc Validate that the value is a valid URL
 valid_url(Value, _) ->

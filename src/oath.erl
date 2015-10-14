@@ -20,6 +20,12 @@ validators() -> [
             fun oath_validators:min_length_validator/2,
             fun oath_validators:max_length_validator/2
         ]},
+        {tuples, [
+            fun oath_validators:ruleset_tuples_validator/2
+        ]},
+        {map, [
+            fun oath_validators:ruleset_tuples_validator/2
+        ]},
         {binary, [
             fun oath_validators:empty_check/2,
             fun oath_validators:min_size_validator/2,
@@ -77,7 +83,13 @@ run_validation(Value, [H|T], Props) ->
         {return, NewValue} ->
             {ok, NewValue};
         {ok, NewValue} ->
-            run_validation(NewValue, T, Props)
+            run_validation(NewValue, T, Props);
+        {invalid, Errors} ->
+            {error, Errors};
+        {valid, Values} ->
+            {ok, Values};
+        Other ->
+            io:format("Other: ~p~n", [Other])
     end.
 
 get_validators(Type) ->
