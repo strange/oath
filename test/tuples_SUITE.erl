@@ -27,12 +27,12 @@ tuples(_Config) ->
         }}
     ],
 
-    {valid, #{<<"gender">> := "m"}} = oath:validate_tuples([
+    {ok, #{<<"gender">> := "m", <<"name">> := "Gurra"}} = oath:validate_tuples([
         {<<"name">>, <<"Gurra">>},
         {<<"gender">>, <<"m">>}
     ], Rules),
 
-    {invalid, #{<<"gender">> := not_in_values}} = oath:validate_tuples([
+    {error, #{<<"gender">> := not_in_values}} = oath:validate_tuples([
         {<<"name">>, <<"Gurra">>},
         {<<"gender">>, <<"x">>}
     ], Rules),

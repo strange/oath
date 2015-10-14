@@ -45,22 +45,10 @@ validators() -> [
     ].
 
 validate_tuples(Data, Rules) ->
-    validate_map(maps:from_list(Data), Rules).
+    validate(Data, tuples, [{rules, Rules}]).
 
 validate_map(Data, Rules) ->
-    validate_map(Data, Rules, #{}, #{}).
-
-validate_map(_Data, [], Values, Errors) when map_size(Errors) =:= 0 ->
-    {valid, Values};
-validate_map(_Data, [], _Values, Errors) ->
-    {invalid, Errors};
-validate_map(Data, [{Key, Type, Props}|T], Values, Errors) ->
-    case validate(maps:get(Key, Data, undefined), Type, Props) of
-        {ok, Value} ->
-            validate_map(Data, T, Values#{Key => Value}, Errors);
-        {error, Reason} ->
-            validate_map(Data, T, Values, Errors#{Key => Reason})
-    end.
+    validate(Data, map, [{rules, Rules}]).
 
 validate(Value, Type, Props) when is_list(Props) ->
     validate(Value, Type, maps:from_list(proplists:unfold(Props)));

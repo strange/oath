@@ -39,4 +39,14 @@ multi(_Config) ->
         {<<"age">>, integer, []}
     ]}]),
 
+    {error, #{<<"properties">> := #{<<"value1">> := invalid_string}}} = oath:validate([
+        {<<"age">>, 1},
+        {<<"properties">>, [{<<"value1">>, 1}]}
+    ], tuples, [{rules, [
+        {<<"age">>, integer, []},
+        {<<"properties">>, tuples, [{rules, [
+            {<<"value1">>, string, []}
+        ]}]}
+    ]}]),
+
     ok.
