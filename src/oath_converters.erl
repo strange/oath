@@ -4,6 +4,7 @@
 -export([string_converter/2]).
 -export([list_converter/2]).
 -export([integer_converter/2]).
+-export([float_converter/2]).
 
 -define(EMPTY_VALUES, [[], <<>>, undefined]).
 
@@ -51,3 +52,18 @@ integer_converter(S, _Props) when is_binary(S) ->
     end;
 integer_converter(_S, _Props) ->
     {error, invalid_integer}.
+
+%% @doc Attempt to convert value to a float
+float_converter(S, _Props) when is_float(S) ->
+    {ok, S};
+float_converter(S, Props) when is_list(S) ->
+    float_converter(list_to_binary(S), Props);
+float_converter(S, _Props) when is_binary(S) ->
+    case catch binary_to_float(S) of
+        {'EXIT', {badarg, _}} ->
+            {error, invalid_float};
+        Converted ->
+            {ok, Converted}
+    end;
+float_converter(_S, _Props) ->
+    {error, invalid_float}.
