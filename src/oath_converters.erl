@@ -5,14 +5,14 @@
 -export([integer_converter/2]).
 -export([float_converter/2]).
 
--define(EMPTY_VALUES, [[], <<>>, undefined]).
-
 list_converter(Value, _Props) when is_list(Value) ->
     {ok, Value};
 list_converter(_Value, _Props) ->
     {error, invalid_list}.
 
 %% @doc Attempt to convert value to a string
+string_converter(S, #{ strict := true }) when not is_list(S) ->
+    {error, invalid_string};
 string_converter(S, _Props) when is_binary(S) ->
     case unicode:characters_to_list(S, utf8) of
         {error, _Encoded, _Rest} ->
@@ -31,6 +31,8 @@ string_converter(_S, _Props) ->
     {error, invalid_string}.
 
 %% @doc Attempt to convert value to an integer
+integer_converter(S, #{ strict := true }) when not is_integer(S) ->
+    {error, invalid_integer};
 integer_converter(S, _Props) when is_integer(S) ->
     {ok, S};
 integer_converter(S, Props) when is_list(S) ->
@@ -46,6 +48,8 @@ integer_converter(_S, _Props) ->
     {error, invalid_integer}.
 
 %% @doc Attempt to convert value to a float
+float_converter(S, #{ strict := true }) when not is_float(S) ->
+    {error, invalid_float};
 float_converter(S, _Props) when is_float(S) ->
     {ok, S};
 float_converter(S, Props) when is_list(S) ->

@@ -26,6 +26,8 @@ convert(_Config) ->
     {ok, 11} = oath:validate("11", integer, []),
     {ok, 11} = oath:validate(11, integer, []),
     {error, invalid_integer} = oath:validate("11z", integer, []),
+    {error, invalid_integer} = oath:validate("11", integer,
+                                             #{ strict => true }),
 
     ok.
 

@@ -55,7 +55,6 @@ float -> float
 ## Ideas
 
 - Figure out how to coerce types
-- Add a "strict" mode
 - Add/replace/extend validators
 - Add context (protocol, credentials, host, port, path etc to url validator
   for example.

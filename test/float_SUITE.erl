@@ -25,6 +25,8 @@ convert(_Config) ->
     {ok, 1.0} = oath:validate(<<"1.0">>, float, []),
     {ok, 11.0} = oath:validate("11.0", float, []),
     {error, invalid_float} = oath:validate("11z", float, []),
+    {error, invalid_float} = oath:validate("11.0", float,
+                                             #{ strict => true }),
 
     ok.
 
