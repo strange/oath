@@ -12,6 +12,8 @@ validators() -> [
             fun oath_validators:min_length_validator/2,
             fun oath_validators:max_length_validator/2,
             fun oath_validators:value_in_validator/2,
+            fun oath_validators:equal_to/2,
+            fun oath_validators:not_equal_to/2,
             fun oath_validators:custom_validators/2
         ]},
         {list, [
@@ -41,6 +43,7 @@ validators() -> [
             fun oath_validators:less_than/2,
             fun oath_validators:less_than_or_equal_to/2,
             fun oath_validators:equal_to/2,
+            fun oath_validators:not_equal_to/2,
             fun oath_validators:value_in_validator/2
         ]},
         {float, [
@@ -52,6 +55,7 @@ validators() -> [
             fun oath_validators:less_than/2,
             fun oath_validators:less_than_or_equal_to/2,
             fun oath_validators:equal_to/2,
+            fun oath_validators:not_equal_to/2,
             fun oath_validators:value_in_validator/2
         ]},
         {url, [

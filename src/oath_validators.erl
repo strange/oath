@@ -17,6 +17,7 @@
 -export([less_than/2]).
 -export([less_than_or_equal_to/2]).
 -export([equal_to/2]).
+-export([not_equal_to/2]).
 
 -define(EMPTY_VALUES, [[], <<>>, undefined, null]).
 -define(DEFAULT_EMPTY_VALUE, undefined).
@@ -62,6 +63,12 @@ less_than_or_equal_to(Value, _Properties) ->
 equal_to(Value, #{eq := V}) when Value =/= V ->
     {error, {not_equal_to, V}};
 equal_to(Value, _Properties) ->
+    {ok, Value}.
+
+%% @doc Validate that value is not equal to
+not_equal_to(Value, #{not_eq := V}) when Value =:= V ->
+    {error, {equal_to, V}};
+not_equal_to(Value, _Properties) ->
     {ok, Value}.
 
 %% @doc Apply all custom validators on value

@@ -9,6 +9,7 @@
 -export([min_length/1]).
 -export([max_length/1]).
 -export([custom/1]).
+-export([equality/1]).
 -export([in/1]).
 
 all() ->
@@ -18,6 +19,7 @@ all() ->
         min_length,
         max_length,
         custom,
+        equality,
         in
     ].
 
@@ -45,6 +47,10 @@ empty(_Config) ->
     {ok, undefined} = oath:validate(<<>>, string, [{required, false}]),
     {ok, x} = oath:validate([], string, [{required, false}, {default, x}]),
 
+    ok.
+
+equality(_Config) ->
+    {ok, "test"} = oath:validate("test", string, #{ eq => "test" }),
     ok.
 
 min_length(_Config) ->
