@@ -1,19 +1,11 @@
 -module(oath_converters).
 
--export([empty_converter/2]).
 -export([string_converter/2]).
 -export([list_converter/2]).
 -export([integer_converter/2]).
 -export([float_converter/2]).
 
 -define(EMPTY_VALUES, [[], <<>>, undefined]).
-
-empty_converter(Value, Props) ->
-    EmptyVals = maps:get(empty_values, Props, ?EMPTY_VALUES),
-    case lists:member(Value, EmptyVals) of
-        true -> {ok, []};
-        false -> {ok, Value}
-    end.
 
 list_converter(Value, _Props) when is_list(Value) ->
     {ok, Value};

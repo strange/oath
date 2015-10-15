@@ -1,3 +1,6 @@
+- Value does not exist (undefined.
+- Value in empty values
+
 <<"string">> -> "string" | <<"string">>
 "string" -> "string" | <<"string">>
 undefined -> undefined | "" | <<>>
