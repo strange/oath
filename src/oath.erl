@@ -57,11 +57,14 @@ validators() -> [
         {url, [
             string,
             fun oath_validators:valid_url/2
+        ]},
+        {email, [
+            string,
+            fun oath_validators:valid_email/2
         ]}
         %% date
         %% datetime
         %% time
-        %% email
         %% decimal
         %% atom
         %% ip

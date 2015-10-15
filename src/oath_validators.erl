@@ -6,6 +6,7 @@
 -export([min_length_validator/2]).
 -export([min_size_validator/2]).
 -export([valid_url/2]).
+-export([valid_email/2]).
 -export([value_in_validator/2]).
 -export([custom_validators/2]).
 -export([strip/2]).
@@ -19,6 +20,9 @@
 
 -define(EMPTY_VALUES, [[], <<>>, undefined, null]).
 -define(DEFAULT_EMPTY_VALUE, undefined).
+
+%% http://stackoverflow.com/questions/11718898/check-string-for-email-with-regular-expressions-or-other-way
+-define(EMAIL_RE, "\\b[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\b").
 
 %% @doc Strip leading and trailing blanks from value
 strip(Value, #{strip := false}) ->
@@ -105,6 +109,16 @@ valid_url(Value, _) ->
             {ok, Value};
         _Other ->
             {error, invalid_url}
+    end.
+
+%% @doc Validate that the value is a valid email address
+valid_email(Value, _) ->
+    % ?EMAIL_RE was just copy/pasted from SO. i haven't thoroughly evaluated
+    % how it performs. the test should probably be replaced with a custom
+    % email validation module.
+    case re:run(Value, ?EMAIL_RE) of
+        {match, _} -> {ok, Value};
+        _ -> {error, invalid_email}
     end.
 
 %% @doc Validate that list-type is at-least N elements long
