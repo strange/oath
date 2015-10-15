@@ -69,6 +69,4 @@ float -> float
 - Date
 - Time
 - DateTime
-- Regex
-- Email
 - IP (4 and 6)
