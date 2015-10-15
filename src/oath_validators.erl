@@ -18,6 +18,7 @@
 -export([less_than_or_equal_to/2]).
 -export([equal_to/2]).
 -export([not_equal_to/2]).
+-export([regex/2]).
 
 -define(EMPTY_VALUES, [[], <<>>, undefined, null]).
 -define(DEFAULT_EMPTY_VALUE, undefined).
@@ -33,6 +34,15 @@ strip(Value, _Props) when is_binary(Value) ->
 strip(Value, _Props) when is_list(Value) ->
     {ok, string:strip(Value)};
 strip(Value, _Props) ->
+    {ok, Value}.
+
+%% @doc Validate against regexp
+regex(Value, #{regex := Re}) ->
+    case re:run(Value, Re) of
+        {match, _} -> {ok, Value};
+        _ -> {error, no_match}
+    end;
+regex(Value, _Properties) ->
     {ok, Value}.
 
 %% @doc Validate that value is greater than V

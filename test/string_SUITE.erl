@@ -10,6 +10,7 @@
 -export([max_length/1]).
 -export([custom/1]).
 -export([equality/1]).
+-export([regex/1]).
 -export([in/1]).
 
 all() ->
@@ -20,6 +21,7 @@ all() ->
         max_length,
         custom,
         equality,
+        regex,
         in
     ].
 
@@ -51,6 +53,14 @@ empty(_Config) ->
 
 equality(_Config) ->
     {ok, "test"} = oath:validate("test", string, #{ eq => "test" }),
+    ok.
+
+regex(_Config) ->
+    {ok, "test"} = oath:validate("test", string, #{ regex => "[a-z]" }),
+    {error, no_match} = oath:validate("test", string, #{ regex => "[A-Z]" }),
+    {ok, "test123"} = oath:validate("test123", string, #{ regex => "[a-z0-9]" }),
+    {error, no_match} = oath:validate("test123", string, #{ regex => "^[a-z0-9]$" }),
+    {ok, "test123"} = oath:validate("test123", string, #{ regex => "^[a-z0-9]+$" }),
     ok.
 
 min_length(_Config) ->
