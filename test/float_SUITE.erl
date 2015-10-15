@@ -32,7 +32,7 @@ empty(_Config) ->
     {error, required} = oath:validate(<<>>, float, []),
     {error, required} = oath:validate(<<>>, float, [required]),
     {error, required} = oath:validate([], float, []),
-    {ok, []} = oath:validate([], float, [{required, false}]),
+    {ok, undefined} = oath:validate([], float, [{required, false}]),
     {ok, 666} = oath:validate([], float, [{required, false}, {default, 666}]),
 
     ok.

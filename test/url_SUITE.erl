@@ -36,7 +36,7 @@ convert(_Config) ->
 empty(_Config) ->
     {error, required} = oath:validate(<<>>, url, []),
     {error, required} = oath:validate(<<>>, url, [required]),
-    {ok, <<>>} = oath:validate(<<>>, url, [{required, false}]),
+    {ok, undefined} = oath:validate(<<>>, url, [{required, false}]),
     {ok, x} = oath:validate([], url, [{required, false}, {default, x}]),
     ok.
 

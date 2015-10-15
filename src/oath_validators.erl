@@ -17,7 +17,8 @@
 -export([less_than_or_equal_to/2]).
 -export([equal_to/2]).
 
--define(EMPTY_VALUES, [[], <<>>, undefined]).
+-define(EMPTY_VALUES, [[], <<>>, undefined, null]).
+-define(DEFAULT_EMPTY_VALUE, undefined).
 
 %% @doc Strip leading and trailing blanks from value
 strip(Value, #{strip := false}) ->
@@ -146,15 +147,15 @@ value_in_validator(Value, _Props) ->
 %% @doc Check if value is "empty" and if an error should be returned, a
 %% default value should be chosen, or if the value should be considered
 %% invalid.
-empty_check(Value, Props) ->
-    EmptyValues = maps:get(empty_values, Props, ?EMPTY_VALUES),
-    case {lists:member(Value, EmptyValues), Props} of
+empty_check(Value, Properties) ->
+    EmptyValues = maps:get(empty_values, Properties, ?EMPTY_VALUES),
+    case {lists:member(Value, EmptyValues), Properties} of
         {false, _Props} ->
             {ok, Value};
         {true, #{required := false, default := Default}} ->
             {return, Default};
         {true, #{required := false}} ->
-            {return, Value};
+            {return, ?DEFAULT_EMPTY_VALUE};
         {true, _Props} ->
             {error, required}
     end.

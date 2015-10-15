@@ -1,3 +1,32 @@
+<<"string">> -> "string" | <<"string">>
+"string" -> "string" | <<"string">>
+undefined -> undefined | "" | <<>>
+
+binary -> binary
+undefined -> undefined | <<>>
+
+int -> int
+"int" -> int
+<<"int">> -> int
+-> undefined | <<>> | ""
+
+float -> float
+"float" -> float
+<<"float">> -> float
+-> undefined | <<>> | ""
+
+"date" -> {Date}
+{Date} -> {Date}
+-> undefined | <<>> | ""
+
+[] -> []
+
+[{}] -> [{}]
+
+#{} -> #{}
+
+---
+
 # This is just a test
 
 ## Value

@@ -58,6 +58,13 @@ validators() -> [
             string,
             fun oath_validators:valid_url/2
         ]}
+        %% date
+        %% datetime
+        %% time
+        %% email
+        %% decimal
+        %% atom
+        %% ip
     ].
 
 validate_tuples(Data, Rules) ->
@@ -69,25 +76,25 @@ validate_map(Data, Rules) ->
 validate(Value, Type, Props) when is_list(Props) ->
     validate(Value, Type, maps:from_list(proplists:unfold(Props)));
 
-validate(Value, Type, Props) ->
+validate(Value, Type, Properties) ->
     Validators = get_validators(Type),
-    run_validation(Value, Validators, Props).
+    run_validation(Value, Validators, Properties).
 
 run_validation(Value, [], _Props) ->
     {ok, Value};
 
-run_validation(Value, [H|T], Props) when is_atom(H) ->
-    Validators = get_validators(H),
-    run_validation(Value, Validators ++ T, Props);
+run_validation(Value, [SuperType|Rest], Props) when is_atom(SuperType) ->
+    Validators = get_validators(SuperType),
+    run_validation(Value, Validators ++ Rest, Props);
 
-run_validation(Value, [H|T], Props) ->
-    case H(Value, Props) of
+run_validation(Value, [Validator|Rest], Props) ->
+    case Validator(Value, Props) of
         {error, _Reason} = Response ->
             Response;
         {return, NewValue} ->
             {ok, NewValue};
         {ok, NewValue} ->
-            run_validation(NewValue, T, Props);
+            run_validation(NewValue, Rest, Props);
         {invalid, Errors} ->
             {error, Errors};
         {valid, Values} ->

@@ -30,8 +30,10 @@ end_per_suite(_Config) ->
 convert(_Config) ->
     {ok, "abc"} = oath:validate(<<"abc">>, string, []),
     {ok, "abc"} = oath:validate("abc", string, []),
-    {ok, []} = oath:validate([], string, [{required, false}]),
+    {ok, undefined} = oath:validate([], string, [{required, false}]),
     {ok, undefined} = oath:validate(undefined, string, [{required, false}]),
+    {ok, []} = oath:validate(undefined, string,
+                             [{required, false}, {default, []}]),
     {error, invalid_string} = oath:validate(abc, string, []),
     {error, invalid_string} = oath:validate(123, string, []),
 
@@ -40,7 +42,7 @@ convert(_Config) ->
 empty(_Config) ->
     {error, required} = oath:validate(<<>>, string, []),
     {error, required} = oath:validate(<<>>, string, [required]),
-    {ok, <<>>} = oath:validate(<<>>, string, [{required, false}]),
+    {ok, undefined} = oath:validate(<<>>, string, [{required, false}]),
     {ok, x} = oath:validate([], string, [{required, false}, {default, x}]),
 
     ok.
