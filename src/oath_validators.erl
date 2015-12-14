@@ -113,9 +113,9 @@ ruleset_map_validator(Value, #{rules := Rules}) ->
 ruleset_map_validator(Value, _Properties) ->
     {ok, Value}.
 ruleset_map_validator(_Data, [], Values, Errors) when map_size(Errors) =:= 0 ->
-    {valid, Values};
+    {ok, Values};
 ruleset_map_validator(_Data, [], _Values, Errors) ->
-    {invalid, Errors};
+    {error, Errors};
 ruleset_map_validator(Data, [{Key, Type, Props}|T], Values, Errors) ->
     case oath:validate(maps:get(Key, Data, undefined), Type, Props) of
         {ok, Value} ->
