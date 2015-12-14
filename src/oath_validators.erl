@@ -98,7 +98,12 @@ custom_validators(Value, _Props) ->
 
 %% @doc Validate a list of tuples against specified rules
 ruleset_tuples_validator(Value, #{rules := _Rules} = Properties) ->
-    ruleset_map_validator(maps:from_list(Value), Properties);
+    case catch maps:from_list(Value) of
+        {'EXIT', {badarg, _Info}} ->
+            {error, invalid_tuples};
+        Map ->
+            ruleset_map_validator(Map, Properties)
+    end;
 ruleset_tuples_validator(Value, _Properties) ->
     {ok, Value}.
 
