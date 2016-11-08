@@ -4,7 +4,7 @@
 -export([validate_tuples/2]).
 -export([validate_map/2]).
 
-validators() -> [
+-define(VALIDATORS, [
         {string, [
             fun oath_validators:strip/2,
             fun oath_validators:empty_check/2,
@@ -73,7 +73,7 @@ validators() -> [
         %% decimal
         %% atom
         %% ip
-    ].
+    ]).
 
 validate_tuples(Data, Rules) ->
     validate(Data, tuples, [{rules, Rules}]).
@@ -112,5 +112,5 @@ run_validation(Value, [Validator|Rest], Props) ->
     end.
 
 get_validators(Type) ->
-    {Type, Validators} = lists:keyfind(Type, 1, validators()),
+    {Type, Validators} = lists:keyfind(Type, 1, ?VALIDATORS),
     Validators.
