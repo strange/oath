@@ -27,6 +27,7 @@
             fun oath_validators:ruleset_tuples_validator/2
         ]},
         {map, [
+            fun oath_converters:map_converter/2,
             fun oath_validators:ruleset_map_validator/2
         ]},
         {binary, [

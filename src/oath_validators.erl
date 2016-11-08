@@ -20,7 +20,7 @@
 -export([not_equal_to/2]).
 -export([regex/2]).
 
--define(EMPTY_VALUES, [[], <<>>, undefined, null]).
+-define(EMPTY_VALUES, [[], <<>>, undefined, null, #{}]).
 -define(DEFAULT_EMPTY_VALUE, undefined).
 
 %% http://stackoverflow.com/questions/11718898/check-string-for-email-with-regular-expressions-or-other-way

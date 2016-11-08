@@ -1,9 +1,22 @@
 -module(oath_converters).
 
+-export([map_converter/2]).
 -export([string_converter/2]).
 -export([list_converter/2]).
 -export([integer_converter/2]).
 -export([float_converter/2]).
+
+map_converter(Value, _Props) when is_map(Value) ->
+    {ok, Value};
+map_converter(Value, #{ strict := false }) when is_list(Value) ->
+    case catch maps:from_list(Value) of
+        {'EXIT', _} ->
+            {error, invalid_map};
+        MapValue ->
+            {ok, MapValue}
+    end;
+map_converter(_Value, _Props) ->
+    {error, invalid_map}.
 
 list_converter(Value, _Props) when is_list(Value) ->
     {ok, Value};
