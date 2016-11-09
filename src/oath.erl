@@ -20,25 +20,25 @@ validate(Value, Type, Properties) ->
 
 validate(Value, Type, Properties, _DefaultProperties) ->
     Validators = get_validators(Type),
-    perform_validation(Value, Validators, Properties).
+    apply_validators(Value, Validators, Properties).
 
 %% Internal API
 
-perform_validation(Value, [], _Props) ->
+apply_validators(Value, [], _Props) ->
     {ok, Value};
 
-perform_validation(Value, [SuperType|Rest], Props) when is_atom(SuperType) ->
+apply_validators(Value, [SuperType|Rest], Props) when is_atom(SuperType) ->
     Validators = get_validators(SuperType),
-    perform_validation(Value, Validators ++ Rest, Props);
+    apply_validators(Value, Validators ++ Rest, Props);
 
-perform_validation(Value, [Validator|Rest], Props) ->
+apply_validators(Value, [Validator|Rest], Props) ->
     case Validator(Value, Props) of
         {error, _Reason} = Response ->
             Response;
         {return, NewValue} ->
             {ok, NewValue};
         {ok, NewValue} ->
-            perform_validation(NewValue, Rest, Props);
+            apply_validators(NewValue, Rest, Props);
         {invalid, Errors} ->
             {error, Errors};
         {valid, Values} ->
