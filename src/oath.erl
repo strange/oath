@@ -33,16 +33,12 @@ apply_validators(Value, [SuperType|Rest], Props) when is_atom(SuperType) ->
 
 apply_validators(Value, [Validator|Rest], Props) ->
     case Validator(Value, Props) of
-        {error, _Reason} = Response ->
-            Response;
         {return, NewValue} ->
             {ok, NewValue};
+        {error, Errors} ->
+            {error, Errors};
         {ok, NewValue} ->
             apply_validators(NewValue, Rest, Props);
-        {invalid, Errors} ->
-            {error, Errors};
-        {valid, Values} ->
-            {ok, Values};
         Other ->
             io:format("Other: ~p~n", [Other])
     end.
