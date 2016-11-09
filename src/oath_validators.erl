@@ -108,7 +108,7 @@ ruleset_tuples_validator(Value, _Properties) ->
     {ok, Value}.
 
 %% @doc Validate map against specified rules
-ruleset_map_validator(Value, #{rules := Rules}) ->
+ruleset_map_validator(Value, #{ rules := Rules }) ->
     ruleset_map_validator(Value, Rules, #{}, #{});
 ruleset_map_validator(Value, _Properties) ->
     {ok, Value}.

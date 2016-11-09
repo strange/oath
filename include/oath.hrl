@@ -18,6 +18,7 @@
             fun oath_validators:max_length_validator/2
         ]},
         {tuples, [
+            fun oath_validators:empty_check/2,
             fun oath_validators:ruleset_tuples_validator/2
         ]},
         {map, [
