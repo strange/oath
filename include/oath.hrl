@@ -17,9 +17,9 @@
             fun oath_validators:min_length_validator/2,
             fun oath_validators:max_length_validator/2
         ]},
-        {tuples, [
+        {proplist, [
             fun oath_validators:empty_check/2,
-            fun oath_validators:ruleset_tuples_validator/2
+            fun oath_validators:ruleset_proplist_validator/2
         ]},
         {map, [
             fun oath_validators:empty_check/2,

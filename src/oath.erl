@@ -44,5 +44,9 @@ apply_validators(Value, [Validator|Rest], Props) ->
     end.
 
 get_validators(Type) ->
-    {Type, Validators} = lists:keyfind(Type, 1, ?VALIDATORS),
-    Validators.
+    case lists:keyfind(Type, 1, ?VALIDATORS) of
+        {Type, Validators} ->
+            Validators;
+        false ->
+            erlang:error(badarg)
+    end.

@@ -25,26 +25,26 @@ convert(_Config) ->
     ok.
 
 multi(_Config) ->
-    {error, #{<<"age">> := not_in_values}} = oath:validate([{<<"age">>, 11}], tuples, [{rules, [
+    {error, #{<<"age">> := not_in_values}} = oath:validate([{<<"age">>, 11}], proplist, [{rules, [
         {<<"age">>, integer, [{in, [10]}]}
     ]}]),
 
     {error, #{<<"age">> := not_in_values, <<"name">> := required}} =
-      oath:validate([{<<"age">>, 11}], tuples, [{rules, [
+      oath:validate([{<<"age">>, 11}], proplist, [{rules, [
         {<<"name">>, string, []},
         {<<"age">>, integer, [{in, [10]}]}
     ]}]),
 
-    {ok, #{<<"age">> := 1}} = oath:validate([{<<"age">>, 1}], tuples, [{rules, [
+    {ok, #{<<"age">> := 1}} = oath:validate([{<<"age">>, 1}], proplist, [{rules, [
         {<<"age">>, integer, []}
     ]}]),
 
     {error, #{<<"properties">> := #{<<"value1">> := invalid_string}}} = oath:validate([
         {<<"age">>, 1},
         {<<"properties">>, [{<<"value1">>, 1}]}
-    ], tuples, [{rules, [
+    ], proplist, [{rules, [
         {<<"age">>, integer, []},
-        {<<"properties">>, tuples, [{rules, [
+        {<<"properties">>, proplist, [{rules, [
             {<<"value1">>, string, []}
         ]}]}
     ]}]),

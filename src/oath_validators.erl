@@ -10,7 +10,7 @@
 -export([value_in_validator/2]).
 -export([custom_validators/2]).
 -export([strip/2]).
--export([ruleset_tuples_validator/2]).
+-export([ruleset_proplist_validator/2]).
 -export([ruleset_map_validator/2]).
 -export([greater_than/2]).
 -export([greater_than_or_equal_to/2]).
@@ -96,15 +96,15 @@ custom_validators(Value, #{custom := [H|T]} = Props) ->
 custom_validators(Value, _Props) ->
     {ok, Value}.
 
-%% @doc Validate a list of tuples against specified rules
-ruleset_tuples_validator(Value, #{rules := _Rules} = Properties) ->
+%% @doc Validate a list of proplists against specified rules
+ruleset_proplist_validator(Value, #{rules := _Rules} = Properties) ->
     case catch maps:from_list(Value) of
         {'EXIT', {badarg, _Info}} ->
-            {error, invalid_tuples};
+            {error, invalid_proplist};
         Map ->
             ruleset_map_validator(Map, Properties)
     end;
-ruleset_tuples_validator(Value, _Properties) ->
+ruleset_proplist_validator(Value, _Properties) ->
     {ok, Value}.
 
 %% @doc Validate map against specified rules

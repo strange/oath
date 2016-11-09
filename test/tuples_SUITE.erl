@@ -18,19 +18,19 @@ end_per_suite(_Config) ->
     ok.
 
 tuples(_Config) ->
-    %% Rules = [
-    %%     {<<"name">>, string, [{required, true}]},
-    %%     {<<"gender">>, string, #{
-    %%         required => true,
-    %%         max_length => 1,
-    %%         in => ["m", "f"]
-    %%     }}
-    %% ],
+    Rules = [
+        {<<"name">>, string, #{}},
+        {<<"gender">>, string, #{
+            max_length => 1,
+            in => ["m", "f"]
+        }}
+    ],
 
-    %% {ok, #{<<"gender">> := "m", <<"name">> := "Gurra"}} = oath:validate_tuples([
-    %%     {<<"name">>, <<"Gurra">>},
-    %%     {<<"gender">>, <<"m">>}
-    %% ], Rules),
+    {ok, #{<<"gender">> := "m", <<"name">> := "Gurra"}} = oath:validate([
+        {<<"name">>, <<"Gurra">>},
+        {<<"gender">>, <<"m">>}
+    ], proplist, #{ rules => Rules }),
+
     %%
     %% {error, invalid_tuples} = oath:validate_tuples([
     %%     <<"invalid">>
