@@ -1,8 +1,7 @@
 -module(oath).
 
+-export([validate/2]).
 -export([validate/3]).
--export([validate_tuples/2]).
--export([validate_map/2]).
 
 -define(VALIDATORS, [
         {string, [
@@ -77,12 +76,10 @@
         %% ip
     ]).
 
-validate_tuples(Data, Rules) ->
-    validate(Data, tuples, [{rules, Rules}]).
+validate(Value, Type) ->
+    validate(Value, Type, #{}).
 
-validate_map(Data, Rules) ->
-    validate(Data, map, [{rules, Rules}]).
-
+-spec validate(any(), atom(), list() | map()) -> {valid, any()} | {invalid, any()}.
 validate(Value, Type, Props) when is_list(Props) ->
     validate(Value, Type, maps:from_list(proplists:unfold(Props)));
 

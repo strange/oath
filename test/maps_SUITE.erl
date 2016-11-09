@@ -7,11 +7,13 @@
 -export([convert/1]).
 -export([empty/1]).
 -export([valid/1]).
+-export([invalid/1]).
 
 all() ->
     [
         convert,
         valid,
+        invalid,
         empty
     ].
 
@@ -29,6 +31,12 @@ convert(_Config) ->
 
 empty(_Config) ->
     {error, required} = oath:validate(<<>>, map, []),
+    ok.
+
+invalid(_Config) ->
+    {ok, #{ a := #{ b := 1 }}} = oath:validate(#{ a => #{ b => 1 } }, map, #{
+        rules => [{a, map, #{ rules => [{b, integer, #{}}] }}]
+    }),
     ok.
 
 valid(_Config) ->

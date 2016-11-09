@@ -28,13 +28,13 @@ end_per_suite(_Config) ->
     ok.
 
 convert(_Config) ->
-    {ok, "gs@trell.se"} = oath:validate(<<"gs@trell.se">>, email, []),
-    {ok, "gs@trell.se"} = oath:validate("gs@trell.se", email, []),
-    {error, invalid_string} = oath:validate('gs@trell.se', email, []),
+    {ok, "gs@trell.se"} = oath:validate(<<"gs@trell.se">>, email),
+    {ok, "gs@trell.se"} = oath:validate("gs@trell.se", email),
+    {error, invalid_string} = oath:validate('gs@trell.se', email),
     ok.
 
 empty(_Config) ->
-    {error, required} = oath:validate(<<>>, email, []),
+    {error, required} = oath:validate(<<>>, email),
     {error, required} = oath:validate(<<>>, email, [required]),
     {ok, undefined} = oath:validate(<<>>, email, [{required, false}]),
     {ok, x} = oath:validate([], email, [{required, false}, {default, x}]),
