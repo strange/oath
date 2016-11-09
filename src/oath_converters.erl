@@ -9,7 +9,7 @@
 map_converter(Value, _Props) when is_map(Value) ->
     {ok, Value};
 map_converter(Value, #{ strict := false }) when is_list(Value) ->
-    case catch maps:from_list(Value) of
+    case catch maps:from_list(proplists:unfold(Value)) of
         {'EXIT', _} ->
             {error, invalid_map};
         MapValue ->

@@ -31,15 +31,15 @@ tuples(_Config) ->
         {<<"gender">>, <<"m">>}
     ], proplist, #{ rules => Rules }),
 
-    %%
-    %% {error, invalid_tuples} = oath:validate_tuples([
-    %%     <<"invalid">>
-    %% ], Rules),
-    %%
-    %%
-    %% {error, #{<<"gender">> := not_in_values}} = oath:validate_tuples([
-    %%     {<<"name">>, <<"Gurra">>},
-    %%     {<<"gender">>, <<"x">>}
-    %% ], Rules),
+
+    {error, invalid_proplist} = oath:validate([
+        <<"invalid">>
+    ], proplist, #{ rules => Rules }),
+
+
+    {error, #{<<"gender">> := not_in_values}} = oath:validate([
+        {<<"name">>, <<"Gurra">>},
+        {<<"gender">>, <<"x">>}
+    ], proplist, #{ rules => Rules }),
 
     ok.

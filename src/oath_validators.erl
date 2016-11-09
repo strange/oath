@@ -98,7 +98,7 @@ custom_validators(Value, _Props) ->
 
 %% @doc Validate a list of proplists against specified rules
 ruleset_proplist_validator(Value, #{rules := _Rules} = Properties) ->
-    case catch maps:from_list(Value) of
+    case catch maps:from_list(proplists:unfold(Value)) of
         {'EXIT', {badarg, _Info}} ->
             {error, invalid_proplist};
         Map ->
