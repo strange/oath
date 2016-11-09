@@ -12,15 +12,15 @@ validate(Value, Type) ->
     validate(Value, Type, #{}).
 
 -spec validate(any(), atom(), list() | map()) -> {valid, any()} | {invalid, any()}.
-validate(Value, Type, Props) when is_list(Props) ->
-    validate(Value, Type, maps:from_list(proplists:unfold(Props)));
+validate(Value, Type, Config) when is_list(Config) ->
+    validate(Value, Type, maps:from_list(proplists:unfold(Config)));
 
-validate(Value, Type, Properties) ->
-    validate(Value, Type, Properties, #{}).
+validate(Value, Type, Config) ->
+    validate(Value, Type, Config, #{}).
 
-validate(Value, Type, Properties, _DefaultProperties) ->
+validate(Value, Type, Config, _DefaultConfig) ->
     Validators = get_validators(Type),
-    apply_validators(Value, Validators, Properties).
+    apply_validators(Value, Validators, Config).
 
 %% Internal API
 
