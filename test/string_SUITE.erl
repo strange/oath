@@ -32,6 +32,7 @@ end_per_suite(_Config) ->
     ok.
 
 convert(_Config) ->
+    {error, invalid_string} = oath:validate(1, string, []),
     {ok, "abc"} = oath:validate(<<"abc">>, string, []),
     {ok, "abc"} = oath:validate("abc", string, []),
     {ok, undefined} = oath:validate([], string, [{required, false}]),

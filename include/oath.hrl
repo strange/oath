@@ -28,6 +28,7 @@
         ]},
         {binary, [
             fun oath_validators:empty_check/2,
+            fun oath_converters:binary_converter/2,
             fun oath_validators:min_size_validator/2,
             fun oath_validators:max_size_validator/2,
             fun oath_validators:value_in_validator/2

@@ -2,6 +2,7 @@
 
 -export([map_converter/2]).
 -export([string_converter/2]).
+-export([binary_converter/2]).
 -export([list_converter/2]).
 -export([integer_converter/2]).
 -export([float_converter/2]).
@@ -22,6 +23,11 @@ list_converter(Value, _Props) when is_list(Value) ->
     {ok, Value};
 list_converter(_Value, _Props) ->
     {error, invalid_list}.
+
+binary_converter(S, _Props) when not is_binary(S) ->
+    {error, invalid_binary};
+binary_converter(S, _Props) ->
+    {ok, S}.
 
 %% @doc Attempt to convert value to a string
 string_converter(S, #{ strict := true }) when not is_list(S) ->
