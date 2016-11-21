@@ -64,5 +64,9 @@ valid_url(_Config) ->
     {ok, "http://hi.se/"} = oath:validate(<<"http://hi.se/">>, url, []),
     {ok, "http://hi.se/?q=a"} = oath:validate(<<"http://hi.se/?q=a">>, url, []),
     {ok, "http://test@hi.se/"} = oath:validate(<<"http://test@hi.se/">>, url, []),
+    {error, invalid_url} = oath:validate(<<"hi.se/">>, url,
+                                         #{ default_to_http => false }),
+    {ok, "http://hi.se/"} = oath:validate(<<"hi.se/">>, url,
+                                          #{ default_to_http => true }),
     {error, invalid_url} = oath:validate(<<"hi.se/">>, url, []),
     ok.

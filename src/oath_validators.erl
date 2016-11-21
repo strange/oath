@@ -125,10 +125,17 @@ ruleset_map_validator(Data, [{Key, Type, Props}|T], Values, Errors) ->
     end.
 
 %% @doc Validate that the value is a valid URL
-valid_url(Value, _) ->
+valid_url(Value, Props) ->
     case http_uri:parse(Value) of
         {ok, _Parts} ->
             {ok, Value};
+        {error, no_scheme} ->
+            case maps:get(default_to_http, Props, false) of
+                true ->
+                    valid_url("http://" ++ Value, Props);
+                _Other ->
+                    {error, invalid_url}
+            end;
         _Other ->
             {error, invalid_url}
     end.
