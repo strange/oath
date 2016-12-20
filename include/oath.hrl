@@ -3,6 +3,7 @@
             fun oath_validators:empty_check/2,
             fun oath_validators:equal_to/2,
             fun oath_validators:not_equal_to/2,
+            fun oath_validators:value_in_validator/2,
             fun oath_validators:custom_validators/2
         ]},
         {string, [
