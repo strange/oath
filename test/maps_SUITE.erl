@@ -31,7 +31,7 @@ convert(_Config) ->
 
 empty(_Config) ->
     {error, required} = oath:validate(<<>>, map, #{}),
-    {ok, #{}} = oath:validate(<<>>, map, #{ required => false, default => #{} }),
+    {ok, #{}} = oath:validate(<<>>, map, #{ default => #{} }),
     ok.
 
 invalid(_Config) ->

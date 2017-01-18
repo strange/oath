@@ -195,7 +195,7 @@ empty_check(Value, Properties) ->
     case {lists:member(Value, EmptyValues), Properties} of
         {false, _Props} ->
             {ok, Value};
-        {true, #{required := false, default := Default}} ->
+        {true, #{ default := Default}} ->
             {return, Default};
         {true, #{required := false}} ->
             {return, ?DEFAULT_EMPTY_VALUE};
