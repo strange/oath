@@ -1,0 +1,9 @@
+{application, oath,
+    [{description, ""},
+    {vsn, "0.1.0"},
+    {modules, [oath]},
+    {applications, [stdlib, kernel]},
+    {registered, []},
+
+    {maintainers, ["Gustaf Sjoberg"]}
+]}.

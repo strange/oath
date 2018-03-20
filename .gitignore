@@ -1,5 +1,6 @@
 /logs
 /ebin
+/_build
 
 *.beam
 oath.d

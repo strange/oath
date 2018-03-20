@@ -1,3 +1,17 @@
-PROJECT = oath
+REBAR := "./rebar3"
 
-include erlang.mk
+.PHONY: build test deps rel
+
+all: deps build
+
+build:
+	$(REBAR) compile
+
+test:
+	$(REBAR) ct
+
+deps:
+	$(REBAR) get-deps
+
+rel: test
+	$(REBAR) release
