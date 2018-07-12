@@ -15,3 +15,6 @@ deps:
 
 rel: test
 	$(REBAR) release
+
+shell:
+	$(REBAR) shell
