@@ -7,18 +7,32 @@
 -export([multi/1]).
 -export([misc/1]).
 -export([convert/1]).
+-export([empty/1]).
 
 all() ->
     [
         multi,
         misc,
-        convert
+        convert,
+        empty
     ].
 
 init_per_suite(Config) ->
     Config.
 
 end_per_suite(_Config) ->
+    ok.
+
+empty(_Config) ->
+    Rules = [
+        {<<"name">>, string, #{}},
+        {<<"gender">>, string, #{
+            max_length => 1,
+            in => ["m", "f"]
+        }}
+    ],
+    {error, #{<<"name">> := required}} = 
+        oath:validate([], proplist, #{ rules => Rules }),
     ok.
 
 misc(_Config) ->
@@ -30,7 +44,7 @@ misc(_Config) ->
         }}
     ],
 
-    {ok, #{<<"gender">> := "m", <<"name">> := "Gurra"}} = oath:validate([
+    {ok, [{<<"name">>, "Gurra"}, {<<"gender">>, "m"}]} = oath:validate([
         {<<"name">>, <<"Gurra">>},
         {<<"gender">>, <<"m">>}
     ], proplist, #{ rules => Rules }),
@@ -64,7 +78,7 @@ multi(_Config) ->
         {<<"age">>, integer, [{in, [10]}]}
     ]}),
 
-    {ok, #{<<"age">> := 1}} = oath:validate([{<<"age">>, 1}], proplist, [{rules, [
+    {ok, [{<<"age">>, 1}]} = oath:validate([{<<"age">>, 1}], proplist, [{rules, [
         {<<"age">>, integer, []}
     ]}]),
 

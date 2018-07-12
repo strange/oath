@@ -1,5 +1,7 @@
 -module(oath_validators).
 
+-export([field_validator/2]).
+
 -export([empty_check/2]).
 -export([max_length_validator/2]).
 -export([max_size_validator/2]).
@@ -10,8 +12,6 @@
 -export([value_in_validator/2]).
 -export([custom_validators/2]).
 -export([strip/2]).
--export([ruleset_proplist_validator/2]).
--export([ruleset_map_validator/2]).
 -export([greater_than/2]).
 -export([greater_than_or_equal_to/2]).
 -export([less_than/2]).
@@ -96,32 +96,38 @@ custom_validators(Value, #{custom := [H|T]} = Props) ->
 custom_validators(Value, _Props) ->
     {ok, Value}.
 
-%% @doc Validate a list of proplists against specified rules
-ruleset_proplist_validator(Value, #{rules := _Rules} = Properties) ->
+%% @doc Validate a proplist or map against a set of rules.
+field_validator(Value, #{rules := _Rules} = Properties) when is_list(Value) ->
     case catch maps:from_list(proplists:unfold(Value)) of
         {'EXIT', {badarg, _Info}} ->
             {error, invalid_proplist};
         Map ->
-            ruleset_map_validator(Map, Properties)
+            case field_validator(Map, Properties) of
+                {ok, CleanValues} ->
+                    OrderedValues = [
+                        {Field, maps:get(Field, CleanValues, undefined)}
+                        || {Field, _} <- Value
+                    ],
+                    {ok, OrderedValues};
+                Other ->
+                    Other
+            end
     end;
-ruleset_proplist_validator(Value, _Properties) ->
+field_validator(Value, #{ rules := Rules }) ->
+    field_validator(Value, Rules, #{}, #{});
+field_validator(Value, _Properties) ->
     {ok, Value}.
 
-%% @doc Validate map against specified rules
-ruleset_map_validator(Value, #{ rules := Rules }) ->
-    ruleset_map_validator(Value, Rules, #{}, #{});
-ruleset_map_validator(Value, _Properties) ->
-    {ok, Value}.
-ruleset_map_validator(_Data, [], Values, Errors) when map_size(Errors) =:= 0 ->
+field_validator(_Data, [], Values, Errors) when map_size(Errors) =:= 0 ->
     {ok, Values};
-ruleset_map_validator(_Data, [], _Values, Errors) ->
+field_validator(_Data, [], _Values, Errors) ->
     {error, Errors};
-ruleset_map_validator(Data, [{Key, Type, Props}|T], Values, Errors) ->
+field_validator(Data, [{Key, Type, Props}|T], Values, Errors) ->
     case oath:validate(maps:get(Key, Data, undefined), Type, Props) of
         {ok, Value} ->
-            ruleset_map_validator(Data, T, Values#{Key => Value}, Errors);
+            field_validator(Data, T, Values#{Key => Value}, Errors);
         {error, Reason} ->
-            ruleset_map_validator(Data, T, Values, Errors#{Key => Reason})
+            field_validator(Data, T, Values, Errors#{Key => Reason})
     end.
 
 %% @doc Validate that the value is a valid URL
@@ -142,8 +148,8 @@ valid_url(Value, Props) ->
 
 %% @doc Validate that the value is a valid email address
 valid_email(Value, _) ->
-    % ?EMAIL_RE was just copy/pasted from SO. i haven't thoroughly evaluated
-    % how it performs. the test should probably be replaced with a custom
+    % ?EMAIL_RE was just copy/pasted from SO. I haven't thoroughly evaluated
+    % how it performs. The test should probably be replaced with a custom
     % email validation module.
     case re:run(Value, ?EMAIL_RE) of
         {match, _} -> {ok, Value};

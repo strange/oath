@@ -24,14 +24,13 @@ end_per_suite(_Config) ->
     ok.
 
 convert(_Config) ->
-    {ok, undefined} = oath:validate([], map, #{ required => false }),
-    {ok, undefined} = oath:validate(<<>>, map, #{ required => false }),
+    {ok, #{}} = oath:validate([], map, #{ strict => false }),
+    {error, invalid_map} = oath:validate(<<>>, map, #{ required => false }),
     {ok, #{ a := b }} = oath:validate([{a, b}], map, #{ strict => false }),
     ok.
 
 empty(_Config) ->
-    {error, required} = oath:validate(<<>>, map, #{}),
-    {ok, #{}} = oath:validate(<<>>, map, #{ default => #{} }),
+    {ok, #{}} = oath:validate([], map, #{ strict => false }),
     ok.
 
 invalid(_Config) ->
@@ -41,5 +40,10 @@ invalid(_Config) ->
     ok.
 
 valid(_Config) ->
-    {ok, #{ a := b }} = oath:validate(#{ a => b }, map, []),
+    {ok, #{a := b}} = oath:validate(#{ a => b }, map, []),
+    {ok, #{a := #{c := 1}}} = oath:validate(#{a => #{c => 1}}, map, #{
+        rules => [
+            {a, map, #{rules => [{c, integer, #{}}]}}
+        ]
+    }),
     ok.

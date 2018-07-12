@@ -26,14 +26,12 @@
             fun oath_validators:custom_validators/2
         ]},
         {proplist, [
-            fun oath_validators:empty_check/2,
-            fun oath_validators:ruleset_proplist_validator/2,
+            fun oath_validators:field_validator/2,
             fun oath_validators:custom_validators/2
         ]},
         {map, [
-            fun oath_validators:empty_check/2,
             fun oath_converters:map_converter/2,
-            fun oath_validators:ruleset_map_validator/2,
+            fun oath_validators:field_validator/2,
             fun oath_validators:custom_validators/2
         ]},
         {binary, [
